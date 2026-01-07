@@ -1,4 +1,6 @@
 #include<iostream>
+#include<fstream>
+#include "../include/jsonman.h"
 
 int main(int argc, char* argv[]){
     if(argc>2){
