@@ -8,8 +8,6 @@ Json::Json(){
         file.close();
 
         file.open("data.json", std::ios::in | std::ios::out);
-    }else{
-        std::cerr<<"Error while trying to open the file data.json"<<std::endl;
     }
 }
 
