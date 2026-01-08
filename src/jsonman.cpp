@@ -74,6 +74,21 @@ void Json::getData(std::vector<Task> &vector){
     }
 }
 
+void Json::setData(std::vector<Task> &vector){
+    file<<"[";
+
+    for (const auto &task: vector){
+        file<<"{";
+        file<<'"id": '<<task.id<<",";
+        file<<'"description": '<<task.description<<",";
+        file<<'"createdAt": '<<task.createdAt<<",";
+        file<<'"updatedAt": '<<task.updatedAt;
+        file<<"}";
+    }
+
+    file<<"]";
+}
+
 Json::~Json(){
     file.close();
 }
