@@ -18,7 +18,52 @@ void Json::getData(std::vector<Task> vector){
     while(std::getline(file, holder)){
         content += holder;
     }
+    holder="";
     std::cout<<content<<"\n";
+
+    //algorithm to find each piece of data
+    int Open=content.find('{'); 
+    int Close=content.find('}', Open);
+    int startIndex=0;
+    int endIndex=0;
+    std::string id;
+    std::string description;
+    std::string createdAt;
+    std::string updatedAt;
+    for(int i=0;i<content.length()-1;i=Close){//content.length()-1 because there is no need to process the last ]
+        startIndex = content.find(':', Open)+2;
+        endIndex = content.find(',', startIndex);
+        int j =0;
+        while(j<4){
+            switch (j)
+            {
+            case 0:
+                id=content.substr(startIndex, endIndex);
+                startIndex = content.find(':', endIndex)+2;
+                endIndex = content.find(',', startIndex);
+                break;
+            case 1:
+                description=content.substr(startIndex, endIndex);
+                startIndex = content.find(':', endIndex)+2;
+                endIndex = content.find(',', startIndex);
+                break;
+            case 2:
+                createdAt=content.substr(startIndex, endIndex);
+                startIndex = content.find(':', endIndex)+2;
+                endIndex = content.find(',', startIndex);
+                break;
+            case 3:
+                updatedAt=content.substr(startIndex, endIndex);
+                break;
+            default:
+                Open=content.find('{', Close); 
+                Close=content.find('}', Open);
+                break;
+            }
+            j++;  
+        }
+    }
+    std::cout<<id<<'\n'<<description<<'\n'<<createdAt<<'\n'<<updatedAt<<'\n';
 }
 
 Json::~Json(){
