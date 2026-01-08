@@ -4,10 +4,9 @@
 
 int main(int argc, char* argv[]){
     //This conditional block makes sure enough commands are passed to the CLI
-    if(argc>2){
-        std::cout<<argv[1]<<' '<<argv[2];
-    }else{
+    if(argc<2){
         std::cout<<"Enter at least 2 commands, or read the README.md"<<std::endl;
+        return 1;
     }
 
     std::vector<Task> tasks;//Task will be stored and processed through this vector
