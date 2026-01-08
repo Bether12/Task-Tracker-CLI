@@ -8,7 +8,7 @@ struct Task
     std::string description;
     std::string status;
     std::string createdAt;
-    std::string createdAt;
+    std::string updatedAt;
 };
 
-#endif TASK_TASK_H_
+#endif

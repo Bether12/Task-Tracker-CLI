@@ -14,4 +14,4 @@ class Json{
         ~Json();
 };
 
-#endif TASK_JSONMAN_H_
+#endif

@@ -1,4 +1,4 @@
-#include "jsonman.h"
+#include "../include/jsonman.h"
 
 Json::Json(){
     file.open("data.json", std::ios::in | std::ios::out);
@@ -20,7 +20,7 @@ void Json::getData(std::vector<Task> vector){
     while(std::getline(file, holder)){
         content += holder;
     }
-    
+    std::cout<<content<<"\n";
 }
 
 Json::~Json(){
