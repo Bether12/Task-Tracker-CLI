@@ -9,8 +9,8 @@ class Json{
     std::fstream file;
     public:
         Json();
-        void getData(std::vector<Task> vector);
-        void setData(std::vector<Task> vector);
+        void getData(std::vector<Task> &vector);
+        void setData(std::vector<Task> &vector);
         ~Json();
 };
 
