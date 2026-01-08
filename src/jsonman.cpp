@@ -34,26 +34,30 @@ void Json::getData(std::vector<Task> vector){
         startIndex = content.find(':', Open)+2;
         endIndex = content.find(',', startIndex);
         int j =0;
-        while(j<4){
+        while(j<=4){
             switch (j)
             {
             case 0:
-                id=content.substr(startIndex, endIndex);
+                id=content.substr(startIndex, endIndex - startIndex);
                 startIndex = content.find(':', endIndex)+2;
                 endIndex = content.find(',', startIndex);
                 break;
             case 1:
-                description=content.substr(startIndex, endIndex);
+                description=content.substr(startIndex,endIndex - startIndex);
                 startIndex = content.find(':', endIndex)+2;
                 endIndex = content.find(',', startIndex);
                 break;
             case 2:
-                createdAt=content.substr(startIndex, endIndex);
+                createdAt=content.substr(startIndex, endIndex - startIndex);
                 startIndex = content.find(':', endIndex)+2;
-                endIndex = content.find(',', startIndex);
+                if (content.find(',', startIndex)==content.npos){
+                    endIndex = content.find('}', startIndex);
+                }else{
+                    endIndex = content.find(',', startIndex);
+                }
                 break;
-            case 3:
-                updatedAt=content.substr(startIndex, endIndex);
+            case 3: 
+                updatedAt=content.substr(startIndex, endIndex - startIndex);
                 break;
             default:
                 Open=content.find('{', Close); 
