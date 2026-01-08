@@ -27,10 +27,6 @@ void Json::getData(std::vector<Task> vector){
     int startIndex=0;
     int endIndex=0;
     int numberOfTasks=0;
-    std::string id;
-    std::string description;
-    std::string createdAt;
-    std::string updatedAt;
     for(int i=0;i<content.length()-1;i=Close){//content.length()-1 because there is no need to process the last ]
         startIndex = content.find(':', Open)+2;
         endIndex = content.find(',', startIndex);
@@ -39,21 +35,21 @@ void Json::getData(std::vector<Task> vector){
             switch (j)
             {
             case 0:
-                id=content.substr(startIndex, endIndex - startIndex);
+                vector[numberOfTasks].id=std::stoi(content.substr(startIndex, endIndex - startIndex));
                 startIndex = content.find(':', endIndex)+2;
                 endIndex = content.find(',', startIndex);
                 break;
             case 1:
-                description=content.substr(startIndex,endIndex - startIndex);
-                description.erase(description.length()-1,1);
-                description.erase(0,1);
+                vector[numberOfTasks].description=content.substr(startIndex,endIndex - startIndex);
+                vector[numberOfTasks].description.erase(vector[numberOfTasks].description.length()-1,1);
+                vector[numberOfTasks].description.erase(0,1);
                 startIndex = content.find(':', endIndex)+2;
                 endIndex = content.find(',', startIndex);
                 break;
             case 2:
-                createdAt=content.substr(startIndex, endIndex - startIndex);
-                createdAt.erase(createdAt.length()-1,1);
-                createdAt.erase(0,1);
+                vector[numberOfTasks].createdAt=content.substr(startIndex, endIndex - startIndex);
+                vector[numberOfTasks].createdAt.erase(vector[numberOfTasks].createdAt.length()-1,1);
+                vector[numberOfTasks].createdAt.erase(0,1);
                 startIndex = content.find(':', endIndex)+2;
                 if (content.find(',', startIndex)==content.npos){
                     endIndex = content.find('}', startIndex);
@@ -62,9 +58,9 @@ void Json::getData(std::vector<Task> vector){
                 }
                 break;
             case 3: 
-                updatedAt=content.substr(startIndex, endIndex - startIndex);
-                updatedAt.erase(updatedAt.length()-1,1);
-                updatedAt.erase(0,1);
+                vector[numberOfTasks].updatedAt=content.substr(startIndex, endIndex - startIndex);
+                vector[numberOfTasks].updatedAt.erase(vector[numberOfTasks].updatedAt.length()-1,1);
+                vector[numberOfTasks].updatedAt.erase(0,1);
                 break;
             default:
                 Open=content.find('{', Close); 
@@ -75,7 +71,6 @@ void Json::getData(std::vector<Task> vector){
         }
         numberOfTasks++;
     }
-    std::cout<<id<<'\n'<<description<<'\n'<<createdAt<<'\n'<<updatedAt<<'\n';
 }
 
 Json::~Json(){
