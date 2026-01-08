@@ -3,13 +3,14 @@
 #include<fstream>
 #include<iostream>
 #include<vector>
+#include "task.h"
 
 class Json{
     std::fstream file;
     public:
         Json();
-        void getData();
-        void setData();
+        void getData(std::vector<Task> vector);
+        void setData(std::vector<Task> vector);
         ~Json();
 };
 
