@@ -52,11 +52,7 @@ void Json::getData(std::vector<Task> &vector){
                 task.createdAt.erase(task.createdAt.length()-1,1);
                 task.createdAt.erase(0,1);
                 startIndex = content.find(':', endIndex)+2;
-                if (content.find(',', startIndex)==content.npos){
-                    endIndex = content.find('}', startIndex);
-                }else{
-                    endIndex = content.find(',', startIndex);
-                }
+                endIndex = content.find('}', startIndex);
                 break;
             case 3: 
                 task.updatedAt=content.substr(startIndex, endIndex - startIndex);
