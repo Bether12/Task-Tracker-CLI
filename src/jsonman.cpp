@@ -5,7 +5,7 @@ Json::Json(){
     if(!file.is_open()){
         file.open("data.json", std::ios::out);
         file.close();
-        file.open("data.json", std::ios::in | std::ios::out);
+        file.open("data.json", std::ios::in | std::ios::out | std::ios::trunc);
     }
 }
 
@@ -32,7 +32,7 @@ void Json::getData(std::vector<Task> &vector){
         endIndex = content.find(',', startIndex);
         Task task;
         int j =0;
-        while(j<=4){
+        while(j<=5){
             switch (j)
             {
             case 0:
@@ -48,13 +48,20 @@ void Json::getData(std::vector<Task> &vector){
                 endIndex = content.find(',', startIndex);
                 break;
             case 2:
+                task.status=content.substr(startIndex,endIndex - startIndex);
+                task.status.erase(task.status.length()-1,1);
+                task.status.erase(0,1);
+                startIndex = content.find(':', endIndex)+2;
+                endIndex = content.find(',', startIndex);
+                break;
+            case 3:
                 task.createdAt=content.substr(startIndex, endIndex - startIndex);
                 task.createdAt.erase(task.createdAt.length()-1,1);
                 task.createdAt.erase(0,1);
                 startIndex = content.find(':', endIndex)+2;
                 endIndex = content.find('}', startIndex);
                 break;
-            case 3: 
+            case 4: 
                 task.updatedAt=content.substr(startIndex, endIndex - startIndex);
                 task.updatedAt.erase(task.updatedAt.length()-1,1);
                 task.updatedAt.erase(0,1);
@@ -68,6 +75,7 @@ void Json::getData(std::vector<Task> &vector){
         }
         std::cout<<task.id<<'\n';
         std::cout<<task.description<<'\n';
+        std::cout<<task.status<<'\n';
         std::cout<<task.createdAt<<'\n';
         std::cout<<task.updatedAt<<'\n';
         vector.push_back(task);
@@ -82,10 +90,14 @@ void Json::setData(std::vector<Task> &vector){
     for (auto &task: vector){
         file<<"{";
         file<<"\"id\": "<<task.id<<",";
-        file<<"\"description\": "<<task.description<<",";
-        file<<"\"createdAt\": "<<task.createdAt<<",";
-        file<<"\"updatedAt\": "<<task.updatedAt;
+        file<<"\"description\": "<<'\"'+task.description+'\"'<<",";
+        file<<"\"status\": "<<'\"'+task.status+'\"'<<",";
+        file<<"\"createdAt\": "<<'\"'+task.createdAt+'\"'<<",";
+        file<<"\"updatedAt\": "<<'\"'+task.updatedAt+'\"';
         file<<"}";
+        if(!(&task==&vector.back())){
+            file<<",";
+        }
     }
 
     file<<"]";

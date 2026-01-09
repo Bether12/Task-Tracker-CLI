@@ -17,8 +17,9 @@ int main(int argc, char* argv[]){
     if (std::string(argv[1])=="add"){
         taskHolder.id=++numberOfTasks;
         taskHolder.description=argv[2];
-        taskHolder.createdAt="";
-        taskHolder.updatedAt="";
+        taskHolder.status="todo";
+        taskHolder.createdAt="1";
+        taskHolder.updatedAt="2";
         tasks.push_back(taskHolder);
         std::cout<<"Task added successfully (ID:"<<taskHolder.id<<')'<<std::endl;
     }else if (std::string(argv[1])=="update"){
