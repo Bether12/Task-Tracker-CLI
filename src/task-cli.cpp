@@ -14,7 +14,6 @@ int main(int argc, char* argv[]){
     file.getData(tasks);
     int numberOfTasks=tasks.size();//To be able to know which id the next task will have
 
-    std::cout<<argv[1]<<std::endl;
     if (std::string(argv[1])=="add"){
         taskHolder.id=++numberOfTasks;
         taskHolder.description=argv[2];
@@ -36,7 +35,7 @@ int main(int argc, char* argv[]){
         std::cerr<<"Unrecognized command, read README.md for a list of accepted commands";
     }
     
-    
+    file.setData(tasks);
 
     return 0;
 }

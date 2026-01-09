@@ -75,9 +75,11 @@ void Json::getData(std::vector<Task> &vector){
 }
 
 void Json::setData(std::vector<Task> &vector){
+    file.clear();
+    file.seekp(0);
     file<<"[";
 
-    for (const auto &task: vector){
+    for (auto &task: vector){
         file<<"{";
         file<<"\"id\": "<<task.id<<",";
         file<<"\"description\": "<<task.description<<",";
