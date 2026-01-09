@@ -79,10 +79,10 @@ void Json::setData(std::vector<Task> &vector){
 
     for (const auto &task: vector){
         file<<"{";
-        file<<'"id": '<<task.id<<",";
-        file<<'"description": '<<task.description<<",";
-        file<<'"createdAt": '<<task.createdAt<<",";
-        file<<'"updatedAt": '<<task.updatedAt;
+        file<<"\"id\": "<<task.id<<",";
+        file<<"\"description\": "<<task.description<<",";
+        file<<"\"createdAt\": "<<task.createdAt<<",";
+        file<<"\"updatedAt\": "<<task.updatedAt;
         file<<"}";
     }
 
