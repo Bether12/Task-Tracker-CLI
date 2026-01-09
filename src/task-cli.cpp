@@ -14,22 +14,23 @@ int main(int argc, char* argv[]){
     file.getData(tasks);
     int numberOfTasks=tasks.size();//To be able to know which id the next task will have
 
-    if (argv[1]=="add"){
+    std::cout<<argv[1]<<std::endl;
+    if (std::string(argv[1])=="add"){
         taskHolder.id=++numberOfTasks;
         taskHolder.description=argv[2];
         taskHolder.createdAt="";
         taskHolder.updatedAt="";
         tasks.push_back(taskHolder);
         std::cout<<"Task added successfully (ID:"<<taskHolder.id<<')'<<std::endl;
-    }else if (argv[1]=="update"){
+    }else if (std::string(argv[1])=="update"){
         /* code */
-    }else if (argv[1]=="delete"){
+    }else if (std::string(argv[1])=="delete"){
         /* code */
-    }else if (argv[1]=="mark-in-progress"){
+    }else if (std::string(argv[1])=="mark-in-progress"){
         /* code */
-    }else if (argv[1]=="mark-done"){
+    }else if (std::string(argv[1])=="mark-done"){
         /* code */
-    }else if (argv[1]=="list"){
+    }else if (std::string(argv[1])=="list"){
         /* code */
     }else{
         std::cerr<<"Unrecognized command, read README.md for a list of accepted commands";

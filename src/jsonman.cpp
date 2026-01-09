@@ -4,9 +4,7 @@ Json::Json(){
     file.open("data.json", std::ios::in | std::ios::out);
     if(!file.is_open()){
         file.open("data.json", std::ios::out);
-        file << "[ ]";
         file.close();
-
         file.open("data.json", std::ios::in | std::ios::out);
     }
 }
@@ -19,7 +17,9 @@ void Json::getData(std::vector<Task> &vector){
         content += holder;
     }
     holder="";
-    std::cout<<content<<"\n";
+    if(content.empty()){
+        return;
+    }
 
     //algorithm to find each piece of data
     int Open=content.find('{'); 
