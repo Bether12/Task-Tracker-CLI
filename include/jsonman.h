@@ -3,10 +3,10 @@
 #include<fstream>
 #include<iostream>
 #include<vector>
+#include<cstdio>
 #include "task.h"
 
 class Json{
-    std::fstream file;
     public:
         Json();
         void getData(std::vector<Task> &vector);

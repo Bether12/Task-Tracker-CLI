@@ -14,7 +14,7 @@ int main(int argc, char* argv[]){
     file.getData(tasks);
     int numberOfTasks=tasks.size();//To be able to know which id the next task will have
 
-    if (std::string(argv[1])=="add"){
+    if (argc>=3 && std::string(argv[1])=="add" && !std::string(argv[2]).empty()){
         taskHolder.id=++numberOfTasks;
         taskHolder.description=argv[2];
         taskHolder.status="todo";
@@ -22,8 +22,27 @@ int main(int argc, char* argv[]){
         taskHolder.updatedAt="2";
         tasks.push_back(taskHolder);
         std::cout<<"Task added successfully (ID:"<<taskHolder.id<<')'<<std::endl;
-    }else if (std::string(argv[1])=="update"){
-        /* code */
+    }else if (argc>3 && std::string(argv[1])=="update" && !std::string(argv[2]).empty()){
+        int idToUpdate = std::stoi(argv[2]);
+        std::cout<<idToUpdate<<"\n";
+        if (numberOfTasks==0){
+            std::cerr<<"There is no tasks in your list"<<std::endl;
+            return 1;
+        }
+        //hay que arreglar esto, imprime algo mal al final del json
+        if(idToUpdate>0){
+            for(auto &task: tasks){
+                if(task.id==idToUpdate){
+                    task.description=std::string(argv[3]);
+                    break;
+                }else if(&task==&tasks.back() && task.id!=idToUpdate){
+                    std::cerr <<"Such ID does not exist"<< '\n';
+                }
+            }
+        }else{
+            std::cerr <<"Such ID does not exist"<< '\n';
+        }
+    
     }else if (std::string(argv[1])=="delete"){
         /* code */
     }else if (std::string(argv[1])=="mark-in-progress"){

@@ -1,15 +1,14 @@
 #include "../include/jsonman.h"
 
-Json::Json(){
-    file.open("data.json", std::ios::in | std::ios::out);
-    if(!file.is_open()){
-        file.open("data.json", std::ios::out);
-        file.close();
-        file.open("data.json", std::ios::in | std::ios::out | std::ios::trunc);
-    }
-}
+Json::Json(){}
 
 void Json::getData(std::vector<Task> &vector){
+    std::ifstream file;
+    file.open("data.json", std::ios::in);
+    if(!file.is_open()){
+        std::cerr<<"Error while trying to read the data"<<std::endl;
+    }
+
     std::string holder;
     std::string content;
 
@@ -17,7 +16,7 @@ void Json::getData(std::vector<Task> &vector){
         content += holder;
     }
     holder="";
-    if(content.empty()){
+    if(content.empty() || content=="[]"){
         return;
     }
 
@@ -73,36 +72,44 @@ void Json::getData(std::vector<Task> &vector){
             }
             j++;  
         }
-        std::cout<<task.id<<'\n';
-        std::cout<<task.description<<'\n';
-        std::cout<<task.status<<'\n';
-        std::cout<<task.createdAt<<'\n';
-        std::cout<<task.updatedAt<<'\n';
         vector.push_back(task);
     }
+    file.close();
 }
 
 void Json::setData(std::vector<Task> &vector){
-    file.clear();
-    file.seekp(0);
-    file<<"[";
+    std::ofstream tempFile;
+    std::string fileName = "data.json";
+    std::string tempFileName = fileName+".temp";
+    tempFile.open(tempFileName);
+    if(!tempFile.is_open()){
+        std::cerr<<"Error while trying to save the data"<<std::endl;
+    }
+    tempFile<<"[";
 
     for (auto &task: vector){
-        file<<"{";
-        file<<"\"id\": "<<task.id<<",";
-        file<<"\"description\": "<<'\"'+task.description+'\"'<<",";
-        file<<"\"status\": "<<'\"'+task.status+'\"'<<",";
-        file<<"\"createdAt\": "<<'\"'+task.createdAt+'\"'<<",";
-        file<<"\"updatedAt\": "<<'\"'+task.updatedAt+'\"';
-        file<<"}";
+        tempFile<<"{";
+        tempFile<<"\"id\": "<<task.id<<",";
+        tempFile<<"\"description\": "<<'\"'+task.description+'\"'<<",";
+        tempFile<<"\"status\": "<<'\"'+task.status+'\"'<<",";
+        tempFile<<"\"createdAt\": "<<'\"'+task.createdAt+'\"'<<",";
+        tempFile<<"\"updatedAt\": "<<'\"'+task.updatedAt+'\"';
+        tempFile<<"}";
         if(!(&task==&vector.back())){
-            file<<",";
+            tempFile<<",";
+        }else{break;}
+    }
+    tempFile<<"]";
+    tempFile.close();
+    if(tempFile.fail()){
+        std::remove(tempFileName.c_str());
+        std::cerr<<"Error, new data could not be saved"<<std::endl;
+    }else{
+        std::remove(fileName.c_str());
+        if(std::rename(tempFileName.c_str(), fileName.c_str()) !=0){
+            perror("Error while trying to create data.json");
         }
     }
-
-    file<<"]";
 }
 
-Json::~Json(){
-    file.close();
-}
+Json::~Json(){}
