@@ -96,7 +96,45 @@ int main(int argc, char* argv[]){
             std::cerr <<"ID must be greater than 0"<< '\n';
         }
     }else if (std::string(argv[1])=="list"){
-        /* code */
+        if(argc==3 && std::string(argv[2])=="todo"){
+            if (numberOfTasks==0){
+                std::cerr<<"There is no tasks in your list"<<std::endl;
+                return 1;
+            }
+            for(auto &task : tasks){
+                if(task.status=="todo"){
+                    std::cout<<"ID:"<<task.id<<" Description:"<<task.description<<" Status:"<<task.status<<" Created At:"<<task.createdAt<<" Updated At:"<<task.updatedAt<<std::endl;
+                }//need to implement a check for printed todo tasks 
+            }
+        }else if(argc==3 && std::string(argv[2])=="done"){
+            if (numberOfTasks==0){
+                std::cerr<<"There is no tasks in your list"<<std::endl;
+                return 1;
+            }
+            for(auto &task : tasks){
+                if(task.status=="done"){
+                    std::cout<<"ID:"<<task.id<<" Description:"<<task.description<<" Status:"<<task.status<<" Created At:"<<task.createdAt<<" Updated At:"<<task.updatedAt<<std::endl;
+                }//need to implement a check for printed done tasks 
+            }
+        }else if(argc==3 && std::string(argv[2])=="in-progress"){
+            if (numberOfTasks==0){
+                std::cerr<<"There is no tasks in your list"<<std::endl;
+                return 1;
+            }
+            for(auto &task : tasks){
+                if(task.status=="in-progress"){
+                    std::cout<<"ID:"<<task.id<<" Description:"<<task.description<<" Status:"<<task.status<<" Created At:"<<task.createdAt<<" Updated At:"<<task.updatedAt<<std::endl;
+                }//need to implement a check for printed todo tasks 
+            }
+        }else{
+            if (numberOfTasks==0){
+                std::cerr<<"There is no tasks in your list"<<std::endl;
+                return 1;
+            }
+            for(auto &task : tasks){
+                std::cout<<"ID:"<<task.id<<" Description:"<<task.description<<" Status:"<<task.status<<" Created At:"<<task.createdAt<<" Updated At:"<<task.updatedAt<<std::endl; 
+            }
+        }
     }else{
         std::cerr<<"Unrecognized or invalid command, read README.md for a list of accepted commands"<<std::endl;
     }
