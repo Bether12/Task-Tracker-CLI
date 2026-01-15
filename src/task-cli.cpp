@@ -59,8 +59,24 @@ int main(int argc, char* argv[]){
         }else{
             std::cerr <<"ID must be greater than 0"<< '\n';
         }
-    }else if (std::string(argv[1])=="mark-in-progress"){
-        /* code */
+    }else if (argc==3 && std::string(argv[1])=="mark-in-progress" && !std::string(argv[2]).empty()){
+        int idToUpdate = std::stoi(argv[2]);
+        if (numberOfTasks==0){
+            std::cerr<<"There is no tasks in your list"<<std::endl;
+            return 1;
+        }
+        if(idToUpdate>0){
+            for(auto task=tasks.begin(); task != tasks.end(); ++task){
+                if(task->id==idToUpdate){
+                    task->status="in-progress";
+                    break;
+                }else if(task==tasks.end() && task->id!=idToUpdate){
+                    std::cerr <<"Such ID does not exist"<< '\n';
+                }
+            }
+        }else{
+            std::cerr <<"ID must be greater than 0"<< '\n';
+        }
     }else if (std::string(argv[1])=="mark-done"){
         /* code */
     }else if (std::string(argv[1])=="list"){
