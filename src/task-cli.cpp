@@ -22,14 +22,12 @@ int main(int argc, char* argv[]){
         taskHolder.updatedAt="2";
         tasks.push_back(taskHolder);
         std::cout<<"Task added successfully (ID:"<<taskHolder.id<<')'<<std::endl;
-    }else if (argc>3 && std::string(argv[1])=="update" && !std::string(argv[2]).empty()){
+    }else if (argc>3 && std::string(argv[1])=="update" && !std::string(argv[2]).empty() && !std::string(argv[3]).empty()){
         int idToUpdate = std::stoi(argv[2]);
-        std::cout<<idToUpdate<<"\n";
         if (numberOfTasks==0){
             std::cerr<<"There is no tasks in your list"<<std::endl;
             return 1;
         }
-        //hay que arreglar esto, imprime algo mal al final del json
         if(idToUpdate>0){
             for(auto &task: tasks){
                 if(task.id==idToUpdate){
@@ -40,11 +38,27 @@ int main(int argc, char* argv[]){
                 }
             }
         }else{
-            std::cerr <<"Such ID does not exist"<< '\n';
+            std::cerr <<"ID must be greater than 0"<< '\n';
         }
     
-    }else if (std::string(argv[1])=="delete"){
-        /* code */
+    }else if (argc==3 && std::string(argv[1])=="delete" && !std::string(argv[2]).empty()){
+        int idToDelete = std::stoi(argv[2]);
+        if (numberOfTasks==0){
+            std::cerr<<"There is no tasks in your list"<<std::endl;
+            return 1;
+        }
+        if(idToDelete>0){
+            for(auto task=tasks.begin(); task != tasks.end(); ++task){
+                if(task->id==idToDelete){
+                    tasks.erase(task);
+                    break;
+                }else if(task==tasks.end() && task->id!=idToDelete){
+                    std::cerr <<"Such ID does not exist"<< '\n';
+                }
+            }
+        }else{
+            std::cerr <<"ID must be greater than 0"<< '\n';
+        }
     }else if (std::string(argv[1])=="mark-in-progress"){
         /* code */
     }else if (std::string(argv[1])=="mark-done"){
@@ -52,7 +66,7 @@ int main(int argc, char* argv[]){
     }else if (std::string(argv[1])=="list"){
         /* code */
     }else{
-        std::cerr<<"Unrecognized command, read README.md for a list of accepted commands";
+        std::cerr<<"Unrecognized or invalid command, read README.md for a list of accepted commands"<<std::endl;
     }
     
     file.setData(tasks);
