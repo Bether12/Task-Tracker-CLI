@@ -12,10 +12,14 @@ int main(int argc, char* argv[]){
     Task taskHolder;//A generic Task object for pushing tasks to the vector
     Json file;
     file.getData(tasks);
-    int numberOfTasks=tasks.size();//To be able to know which id the next task will have
+    int numberOfTasks=tasks.size();//To be able to know if the vector is empty
 
     if (argc>=3 && std::string(argv[1])=="add" && !std::string(argv[2]).empty()){
-        taskHolder.id=++numberOfTasks;
+        if(numberOfTasks==0){
+            taskHolder.id=1;
+        }else{
+            taskHolder.id=tasks[numberOfTasks-1].id + 1;
+        }
         taskHolder.description=argv[2];
         taskHolder.status="todo";
         taskHolder.createdAt="1";
