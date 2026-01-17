@@ -1,5 +1,5 @@
-#include<iostream>
-#include<fstream>
+#include <iostream>
+#include <fstream>
 #include <chrono>
 #include <ctime>
 #include <iomanip>
@@ -28,12 +28,20 @@ int main(int argc, char* argv[]){
     Json file;
     file.getData(tasks);
     int numberOfTasks=tasks.size();//To be able to know if the vector is empty
+    int maxId=0;
+    if(numberOfTasks!=0){
+        for(const auto task:tasks){
+            if(maxId<task.id){
+                maxId=task.id;
+            }
+        }
+    }
 
     if (argc>=3 && std::string(argv[1])=="add" && !std::string(argv[2]).empty()){
         if(numberOfTasks==0){
             taskHolder.id=1;
         }else{
-            taskHolder.id=tasks[numberOfTasks-1].id + 1;
+            taskHolder.id=maxId + 1;
         }
         taskHolder.description=argv[2];
         taskHolder.status="todo";
