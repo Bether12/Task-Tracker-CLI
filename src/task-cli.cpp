@@ -138,9 +138,10 @@ int main(int argc, char* argv[]){
                 if(task.status=="todo"){
                     found=true;
                     std::cout<<"ID:"<<task.id<<" Description:"<<task.description<<" Status:"<<task.status<<" Created At:"<<task.createdAt<<" Updated At:"<<task.updatedAt<<std::endl;
-                }else if (!found){
-                    std::cerr<<"There are no todo tasks in your list"<<std::endl;
                 }
+            }
+            if (!found){
+                std::cerr<<"There are no todo tasks in your list"<<std::endl;
             }
         }else if(argc==3 && std::string(argv[2])=="done"){
             if (numberOfTasks==0){
@@ -152,10 +153,11 @@ int main(int argc, char* argv[]){
                 if(task.status=="done"){
                     found=true;
                     std::cout<<"ID:"<<task.id<<" Description:"<<task.description<<" Status:"<<task.status<<" Created At:"<<task.createdAt<<" Updated At:"<<task.updatedAt<<std::endl;
-                }else if (!found){
-                    std::cerr<<"There are no done tasks in your list"<<std::endl;
-                } 
+                }
             }
+            if (!found){
+                std::cerr<<"There are no done tasks in your list"<<std::endl;
+            } 
         }else if(argc==3 && std::string(argv[2])=="in-progress"){
             if (numberOfTasks==0){
                 std::cerr<<"There is no tasks in your list"<<std::endl;
@@ -166,9 +168,10 @@ int main(int argc, char* argv[]){
                 if(task.status=="in-progress"){
                     found=true;
                     std::cout<<"ID:"<<task.id<<" Description:"<<task.description<<" Status:"<<task.status<<" Created At:"<<task.createdAt<<" Updated At:"<<task.updatedAt<<std::endl;
-                }else if (!found){
-                    std::cerr<<"There are no in-progress tasks in your list"<<std::endl;
                 } 
+            }
+            if (!found){
+                std::cerr<<"There are no in-progress tasks in your list"<<std::endl;
             }
         }else{
             if (numberOfTasks==0){
