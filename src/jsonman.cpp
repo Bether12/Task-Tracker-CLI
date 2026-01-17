@@ -42,8 +42,19 @@ void Json::getData(std::vector<Task> &vector){
             std::cerr<<"Error while reading the data"<<std::endl;
             break;
         }
-        //need to erase properly the extra commas
-        task.id = std::stoi(content.substr(index, content.find(',', index)-index));
+
+        try{
+            task.id = std::stoi(content.substr(index, content.find(',', index)-index));
+        }catch(const std::invalid_argument &e){
+            std::cerr<<"Invalid ID format, ID is not a number"<<std::endl;
+            Open=content.find('{', index);
+            continue;
+        }catch(const std::out_of_range &e){
+            std::cerr<<"ID value is too large "<<std::endl;
+            Open=content.find('{', index);
+            continue;
+        }
+        
         index=content.find(':', content.find("\"description\"", index)) + 1;
 
         task.description=content.substr(index, content.rfind(',', content.find("\"status\"", index)) - index);
