@@ -15,65 +15,50 @@ void Json::getData(std::vector<Task> &vector){
     while(std::getline(file, holder)){
         content += holder;
     }
+    file.close();
     holder="";
     if(content.empty() || content=="[]"){
         return;
     }
     
     //algorithm to find each piece of data
-    int Open=content.find('{'); 
-    int Close=content.find('}', Open);
-    int startIndex=0;
-    int endIndex=0;
-    for(int i=0;i<content.length()-1;i=Close){//content.length()-1 because there is no need to process the last ]
-        startIndex = content.find(':', Open)+2;
-        endIndex = content.find(',', startIndex);
+    int Open=content.find_first_of('{'); 
+    int index=0;
+    while (Open!=std::string::npos){
         Task task;
-        int j =0;
-        while(j<=5){
-            switch (j)
-            {
-            case 0:
-                task.id=std::stoi(content.substr(startIndex, endIndex - startIndex));
-                startIndex = content.find(':', endIndex)+2;
-                endIndex = content.find(',', startIndex);
-                break;
-            case 1:
-                task.description=content.substr(startIndex,endIndex - startIndex);
-                task.description.erase(task.description.length()-1,1);
-                task.description.erase(0,1);
-                startIndex = content.find(':', endIndex)+2;
-                endIndex = content.find(',', startIndex);
-                break;
-            case 2:
-                task.status=content.substr(startIndex,endIndex - startIndex);
-                task.status.erase(task.status.length()-1,1);
-                task.status.erase(0,1);
-                startIndex = content.find(':', endIndex)+2;
-                endIndex = content.find(',', startIndex);
-                break;
-            case 3:
-                task.createdAt=content.substr(startIndex, endIndex - startIndex);
-                task.createdAt.erase(task.createdAt.length()-1,1);
-                task.createdAt.erase(0,1);
-                startIndex = content.find(':', endIndex)+2;
-                endIndex = content.find('}', startIndex);
-                break;
-            case 4: 
-                task.updatedAt=content.substr(startIndex, endIndex - startIndex);
-                task.updatedAt.erase(task.updatedAt.length()-1,1);
-                task.updatedAt.erase(0,1);
-                break;
-            default:
-                Open=content.find('{', Close); 
-                Close=content.find('}', Open);
-                break;
-            }
-            j++;  
+        index=content.find("\"id\"", Open);
+        if(index!=std::string::npos){
+            index=content.find(':', index) + 1;
+        }else{
+            std::cerr<<"Error while reading the data"<<std::endl;
+            break;
         }
+
+        task.id = std::stoi(content.substr(index, content.find(',', index)-index));
+        index=content.find(':', content.find("\"description\"", index)) + 1;
+
+        task.description=content.substr(index, content.rfind(',', content.find("\"status\"", index)) - index);
+        task.description.erase(task.description.length()-1,1);
+        task.description.erase(0,1);
+        index=content.find(':', content.find("\"status\"", index)) + 1;
+
+        task.status=content.substr(index, content.find(',', index)-index);
+        task.status.erase(task.status.length()-1,1);
+        task.status.erase(0,1);
+        index=content.find(':', content.find("\"createdAt\"", index)) + 1;
+
+        task.createdAt=content.substr(index, content.find(',', index)-index);
+        task.createdAt.erase(task.createdAt.length()-1,1);
+        task.createdAt.erase(0,1);
+        index=content.find(':', content.find("\"updatedAt\"", index)) + 1;
+
+        task.updatedAt=content.substr(index, content.find('}', index)-index);
+        task.updatedAt.erase(task.updatedAt.length()-1,1);
+        task.updatedAt.erase(0,1);
+
         vector.push_back(task);
+        Open=content.find('{', index);
     }
-    file.close();
 }
 
 void Json::setData(std::vector<Task> &vector){
