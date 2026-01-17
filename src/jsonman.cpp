@@ -19,13 +19,12 @@ void Json::getData(std::vector<Task> &vector){
     if(content.empty() || content=="[]"){
         return;
     }
-
+    
     //algorithm to find each piece of data
     int Open=content.find('{'); 
     int Close=content.find('}', Open);
     int startIndex=0;
     int endIndex=0;
-    int numberOfTasks=0;
     for(int i=0;i<content.length()-1;i=Close){//content.length()-1 because there is no need to process the last ]
         startIndex = content.find(':', Open)+2;
         endIndex = content.find(',', startIndex);

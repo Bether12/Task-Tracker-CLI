@@ -144,6 +144,5 @@ int main(int argc, char* argv[]){
     }
     
     file.setData(tasks);
-
     return 0;
 }
