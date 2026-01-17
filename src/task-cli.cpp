@@ -17,6 +17,14 @@ std::string getCurrentTime() {
     return ss.str();
 };
 
+Task* findTaskById(std::vector<Task> vector, int id){
+    Task* taskId;
+    for(auto &task: vector){
+        if(task.id==id) return &task;
+    }
+    return nullptr;
+}
+
 int main(int argc, char* argv[]){
     //This conditional block makes sure enough commands are passed to the CLI
     if(argc<2){
@@ -52,18 +60,16 @@ int main(int argc, char* argv[]){
     }else if (argc>3 && std::string(argv[1])=="update" && !std::string(argv[2]).empty() && !std::string(argv[3]).empty()){
         int idToUpdate = std::stoi(argv[2]);
         if (numberOfTasks==0){
-            std::cerr<<"There is no tasks in your list"<<std::endl;
+            std::cerr<<"There are no tasks in your list"<<std::endl;
             return 1;
         }
         if(idToUpdate>0){
-            for(auto &task: tasks){
-                if(task.id==idToUpdate){
-                    task.description=std::string(argv[3]);
-                    task.updatedAt=getCurrentTime();
-                    break;
-                }else if(&task==&tasks.back() && task.id!=idToUpdate){
-                    std::cerr <<"Such ID does not exist"<< '\n';
-                }
+            Task* targetTask = findTaskById(tasks, idToUpdate);
+            if(targetTask){
+                targetTask->description=argv[3];
+                targetTask->updatedAt=getCurrentTime();
+            }else{
+                std::cerr<<"Such ID does not exist"<< '\n';
             }
         }else{
             std::cerr <<"ID must be greater than 0"<< '\n';
@@ -72,36 +78,34 @@ int main(int argc, char* argv[]){
     }else if (argc==3 && std::string(argv[1])=="delete" && !std::string(argv[2]).empty()){
         int idToDelete = std::stoi(argv[2]);
         if (numberOfTasks==0){
-            std::cerr<<"There is no tasks in your list"<<std::endl;
+            std::cerr<<"There are no tasks in your list"<<std::endl;
             return 1;
         }
         if(idToDelete>0){
+            bool found=false;
             for(auto task=tasks.begin(); task != tasks.end(); ++task){
                 if(task->id==idToDelete){
                     tasks.erase(task);
+                    found=true;
                     break;
-                }else if(task==tasks.end() && task->id!=idToDelete){
-                    std::cerr <<"Such ID does not exist"<< '\n';
                 }
-            }
+            }if(!found) std::cerr <<"Such ID does not exist"<< '\n';
         }else{
             std::cerr <<"ID must be greater than 0"<< '\n';
         }
     }else if (argc==3 && std::string(argv[1])=="mark-in-progress" && !std::string(argv[2]).empty()){
         int idToUpdate = std::stoi(argv[2]);
         if (numberOfTasks==0){
-            std::cerr<<"There is no tasks in your list"<<std::endl;
+            std::cerr<<"There are no tasks in your list"<<std::endl;
             return 1;
         }
         if(idToUpdate>0){
-            for(auto task=tasks.begin(); task != tasks.end(); ++task){
-                if(task->id==idToUpdate){
-                    task->status="in-progress";
-                    task->updatedAt=getCurrentTime();
-                    break;
-                }else if(task==tasks.end() && task->id!=idToUpdate){
-                    std::cerr <<"Such ID does not exist"<< '\n';
-                }
+            Task* targetTask = findTaskById(tasks, idToUpdate);
+            if(targetTask){
+                targetTask->status=argv[3];
+                targetTask->updatedAt=getCurrentTime();
+            }else{
+                std::cerr<<"Such ID does not exist"<< '\n';
             }
         }else{
             std::cerr <<"ID must be greater than 0"<< '\n';
@@ -109,18 +113,16 @@ int main(int argc, char* argv[]){
     }else if (argc==3 && std::string(argv[1])=="mark-done" && !std::string(argv[2]).empty()){
         int idToUpdate = std::stoi(argv[2]);
         if (numberOfTasks==0){
-            std::cerr<<"There is no tasks in your list"<<std::endl;
+            std::cerr<<"There are no tasks in your list"<<std::endl;
             return 1;
         }
         if(idToUpdate>0){
-            for(auto task=tasks.begin(); task != tasks.end(); ++task){
-                if(task->id==idToUpdate){
-                    task->status="done";
-                    task->updatedAt=getCurrentTime();
-                    break;
-                }else if(task==tasks.end() && task->id!=idToUpdate){
-                    std::cerr <<"Such ID does not exist"<< '\n';
-                }
+            Task* targetTask = findTaskById(tasks, idToUpdate);
+            if(targetTask){
+                targetTask->status=argv[3];
+                targetTask->updatedAt=getCurrentTime();
+            }else{
+                std::cerr<<"Such ID does not exist"<< '\n';
             }
         }else{
             std::cerr <<"ID must be greater than 0"<< '\n';
@@ -128,37 +130,49 @@ int main(int argc, char* argv[]){
     }else if (std::string(argv[1])=="list"){
         if(argc==3 && std::string(argv[2])=="todo"){
             if (numberOfTasks==0){
-                std::cerr<<"There is no tasks in your list"<<std::endl;
+                std::cerr<<"There are no tasks in your list"<<std::endl;
                 return 1;
             }
+            bool found=false;
             for(auto &task : tasks){
                 if(task.status=="todo"){
+                    found=true;
                     std::cout<<"ID:"<<task.id<<" Description:"<<task.description<<" Status:"<<task.status<<" Created At:"<<task.createdAt<<" Updated At:"<<task.updatedAt<<std::endl;
-                }//need to implement a check for printed todo tasks 
+                }else if (!found){
+                    std::cerr<<"There are no todo tasks in your list"<<std::endl;
+                }
             }
         }else if(argc==3 && std::string(argv[2])=="done"){
             if (numberOfTasks==0){
-                std::cerr<<"There is no tasks in your list"<<std::endl;
+                std::cerr<<"There are no tasks in your list"<<std::endl;
                 return 1;
             }
+            bool found=false;
             for(auto &task : tasks){
                 if(task.status=="done"){
+                    found=true;
                     std::cout<<"ID:"<<task.id<<" Description:"<<task.description<<" Status:"<<task.status<<" Created At:"<<task.createdAt<<" Updated At:"<<task.updatedAt<<std::endl;
-                }//need to implement a check for printed done tasks 
+                }else if (!found){
+                    std::cerr<<"There are no done tasks in your list"<<std::endl;
+                } 
             }
         }else if(argc==3 && std::string(argv[2])=="in-progress"){
             if (numberOfTasks==0){
                 std::cerr<<"There is no tasks in your list"<<std::endl;
                 return 1;
             }
+            bool found=false;
             for(auto &task : tasks){
                 if(task.status=="in-progress"){
+                    found=true;
                     std::cout<<"ID:"<<task.id<<" Description:"<<task.description<<" Status:"<<task.status<<" Created At:"<<task.createdAt<<" Updated At:"<<task.updatedAt<<std::endl;
-                }//need to implement a check for printed todo tasks 
+                }else if (!found){
+                    std::cerr<<"There are no in-progress tasks in your list"<<std::endl;
+                } 
             }
         }else{
             if (numberOfTasks==0){
-                std::cerr<<"There is no tasks in your list"<<std::endl;
+                std::cerr<<"There are no tasks in your list"<<std::endl;
                 return 1;
             }
             for(auto &task : tasks){
