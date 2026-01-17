@@ -102,7 +102,7 @@ int main(int argc, char* argv[]){
         if(idToUpdate>0){
             Task* targetTask = findTaskById(tasks, idToUpdate);
             if(targetTask){
-                targetTask->status=argv[3];
+                targetTask->status="in-progress";
                 targetTask->updatedAt=getCurrentTime();
             }else{
                 std::cerr<<"Such ID does not exist"<< '\n';
@@ -119,7 +119,7 @@ int main(int argc, char* argv[]){
         if(idToUpdate>0){
             Task* targetTask = findTaskById(tasks, idToUpdate);
             if(targetTask){
-                targetTask->status=argv[3];
+                targetTask->status="done";
                 targetTask->updatedAt=getCurrentTime();
             }else{
                 std::cerr<<"Such ID does not exist"<< '\n';
