@@ -9,6 +9,7 @@
 class Json{
     public:
         Json();
+        void trim(std::string &s);
         void getData(std::vector<Task> &vector);
         void setData(std::vector<Task> &vector);
         ~Json();

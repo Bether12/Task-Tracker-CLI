@@ -1,6 +1,21 @@
 #include<iostream>
 #include<fstream>
+#include <chrono>
+#include <ctime>
+#include <iomanip>
+#include <sstream>
 #include "../include/jsonman.h"
+
+std::string getCurrentTime() {
+    auto now = std::chrono::system_clock::now();
+    std::time_t now_c = std::chrono::system_clock::to_time_t(now);
+    std::tm* now_tm = std::localtime(&now_c);
+    
+    //(YYYY-MM-DD HH:MM:SS)
+    std::stringstream ss;
+    ss << std::put_time(now_tm, "%Y-%m-%d %H:%M:%S");
+    return ss.str();
+};
 
 int main(int argc, char* argv[]){
     //This conditional block makes sure enough commands are passed to the CLI
@@ -22,8 +37,8 @@ int main(int argc, char* argv[]){
         }
         taskHolder.description=argv[2];
         taskHolder.status="todo";
-        taskHolder.createdAt="1";
-        taskHolder.updatedAt="2";
+        taskHolder.createdAt=getCurrentTime();
+        taskHolder.updatedAt=taskHolder.createdAt;
         tasks.push_back(taskHolder);
         std::cout<<"Task added successfully (ID:"<<taskHolder.id<<')'<<std::endl;
     }else if (argc>3 && std::string(argv[1])=="update" && !std::string(argv[2]).empty() && !std::string(argv[3]).empty()){
@@ -36,6 +51,7 @@ int main(int argc, char* argv[]){
             for(auto &task: tasks){
                 if(task.id==idToUpdate){
                     task.description=std::string(argv[3]);
+                    task.updatedAt=getCurrentTime();
                     break;
                 }else if(&task==&tasks.back() && task.id!=idToUpdate){
                     std::cerr <<"Such ID does not exist"<< '\n';
@@ -73,6 +89,7 @@ int main(int argc, char* argv[]){
             for(auto task=tasks.begin(); task != tasks.end(); ++task){
                 if(task->id==idToUpdate){
                     task->status="in-progress";
+                    task->updatedAt=getCurrentTime();
                     break;
                 }else if(task==tasks.end() && task->id!=idToUpdate){
                     std::cerr <<"Such ID does not exist"<< '\n';
@@ -91,6 +108,7 @@ int main(int argc, char* argv[]){
             for(auto task=tasks.begin(); task != tasks.end(); ++task){
                 if(task->id==idToUpdate){
                     task->status="done";
+                    task->updatedAt=getCurrentTime();
                     break;
                 }else if(task==tasks.end() && task->id!=idToUpdate){
                     std::cerr <<"Such ID does not exist"<< '\n';

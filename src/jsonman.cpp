@@ -2,6 +2,14 @@
 
 Json::Json(){}
 
+ void Json::trim(std::string &s){
+        if(s.empty()){return;}
+        auto start=s.find_first_not_of(" \"");
+        if(start==std::string::npos){s.clear(); return;}
+        auto end=s.find_last_not_of(" \"");
+        s=s.substr(start, end-start + 1);
+    }
+
 void Json::getData(std::vector<Task> &vector){
     std::ifstream file;
     file.open("data.json", std::ios::in);
@@ -24,6 +32,7 @@ void Json::getData(std::vector<Task> &vector){
     //algorithm to find each piece of data
     int Open=content.find_first_of('{'); 
     int index=0;
+
     while (Open!=std::string::npos){
         Task task;
         index=content.find("\"id\"", Open);
@@ -33,28 +42,24 @@ void Json::getData(std::vector<Task> &vector){
             std::cerr<<"Error while reading the data"<<std::endl;
             break;
         }
-
+        //need to erase properly the extra commas
         task.id = std::stoi(content.substr(index, content.find(',', index)-index));
         index=content.find(':', content.find("\"description\"", index)) + 1;
 
         task.description=content.substr(index, content.rfind(',', content.find("\"status\"", index)) - index);
-        task.description.erase(task.description.length()-1,1);
-        task.description.erase(0,1);
+        trim(task.description);
         index=content.find(':', content.find("\"status\"", index)) + 1;
 
         task.status=content.substr(index, content.find(',', index)-index);
-        task.status.erase(task.status.length()-1,1);
-        task.status.erase(0,1);
+        trim(task.status);
         index=content.find(':', content.find("\"createdAt\"", index)) + 1;
 
         task.createdAt=content.substr(index, content.find(',', index)-index);
-        task.createdAt.erase(task.createdAt.length()-1,1);
-        task.createdAt.erase(0,1);
+        trim(task.createdAt);
         index=content.find(':', content.find("\"updatedAt\"", index)) + 1;
 
         task.updatedAt=content.substr(index, content.find('}', index)-index);
-        task.updatedAt.erase(task.updatedAt.length()-1,1);
-        task.updatedAt.erase(0,1);
+        trim(task.updatedAt);
 
         vector.push_back(task);
         Open=content.find('{', index);
