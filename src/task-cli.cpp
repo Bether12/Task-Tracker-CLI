@@ -18,7 +18,6 @@ std::string getCurrentTime() {
 };
 
 Task* findTaskById(std::vector<Task> &vector, int id){
-    Task* taskId;
     for(auto &task: vector){
         if(task.id==id) return &task;
     }
