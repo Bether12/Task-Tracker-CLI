@@ -76,6 +76,10 @@ The Task CLI accepts 9 commands which define its functionality:
     ./task-cli list done
     ```
 
+## Demo
+
+![Task Tracker CLI Demo](demo/cli_demo.gif)
+
 ## Design Decisions
 
 As a CS student, I chose to develop a manual JSON parser instead of utilizing standard third-party libraries like `nlohmann/json`. The goal was to gain a deeper understanding of substring search logic and data structuring at a low level.
