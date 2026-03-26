@@ -11,9 +11,13 @@ Json::Json(){}
     }
 
 void Json::getData(std::vector<Task> &vector){
+    std::ofstream f;
+    f.open("data.json", std::ios::app);
+    f.close();
+
     std::ifstream file;
-    file.open("data.json", std::ios::in);
-    if(!file.is_open()){
+    file.open("data.json");
+    if(!file){
         std::cerr<<"Error while trying to read the data"<<std::endl;
     }
 
